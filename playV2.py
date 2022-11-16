@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import time
 import requests
+from common.config import getconfig
 
-authorization = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9za2lsbHMtYXBpLmtqY3hjaGluYS5jb21cL2FwaVwvdjFcL2F1dGhvcml6YXRpb25zIiwiaWF0IjoxNjY4NTc3NDAzLCJleHAiOjE2NzExNjk0MDMsIm5iZiI6MTY2ODU3NzQwMywianRpIjoieHAwV0laemxSc1NVSnZreCIsInN1YiI6MTAxOTcwMywicHJ2IjoiZjY0ZDQ4YTZjZWM3YmRmYTdmYmY4OTk0NTRiNDg4YjNlNDYyNTIwYSJ9.-t0FaP_7LJiLznzp6B8i2J_HchQZtCNRguepQ51pvY8'
-
+# 登录token
+config = getconfig()
+authorization = config['login']['authorization']
+# authorization = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9za2lsbHMtYXBpLmtqY3hjaGluYS5jb21cL2FwaVwvdjFcL2F1dGhvcml6YXRpb25zIiwiaWF0IjoxNjY4NTc3NDAzLCJleHAiOjE2NzExNjk0MDMsIm5iZiI6MTY2ODU3NzQwMywianRpIjoieHAwV0laemxSc1NVSnZreCIsInN1YiI6MTAxOTcwMywicHJ2IjoiZjY0ZDQ4YTZjZWM3YmRmYTdmYmY4OTk0NTRiNDg4YjNlNDYyNTIwYSJ9.-t0FaP_7LJiLznzp6B8i2J_HchQZtCNRguepQ51pvY8'
 
 def savePlay(course_id, cid, play_timestamp, play_duration):
   url = "https://skills-api.kjcxchina.com/api/v1/saveStudy"
