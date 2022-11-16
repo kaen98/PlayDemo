@@ -2,7 +2,7 @@
 PlayDemo 一个加快视频学习进度的脚本
 
 ## 环境: 
-python3
+Python 3
 
 ## 配置文件:
 example.config.yaml 改名为 config.yaml
