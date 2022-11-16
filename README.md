@@ -14,7 +14,9 @@ PlayDemo 一个加快视频学习进度的脚本
 Python 3
 
 ## 配置文件:
+
 example.config.yaml 改名为 config.yaml
+
 login.authorization 配置上接口登录态token
 
 ```yaml
