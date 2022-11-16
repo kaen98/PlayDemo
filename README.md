@@ -1,3 +1,5 @@
+![封面](https://p3-zeus.byteimg.com/img/tos-cn-i-tv0gyzr5fi/70896862d07542c5ab0e9f702eca1e63~tplv-tv0gyzr5fi-image.image)
+
 # PlayDemo
 PlayDemo 一个加快视频学习进度的脚本
 
