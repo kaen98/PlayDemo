@@ -80,7 +80,7 @@ def coursesDetail(id, chapter_id):
     'authority': 'skills-api.kjcxchina.com',
     'accept': '*/*',
     'accept-language': 'zh-CN,zh;q=0.9',
-    'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvc2tpbGxzLWFwaS5ramN4Y2hpbmEuY29tXC9hcGlcL3YxXC9hdXRob3JpemF0aW9ucyIsImlhdCI6MTY2ODU2ODkyMywiZXhwIjoxNjcxMTYwOTIzLCJuYmYiOjE2Njg1Njg5MjMsImp0aSI6IlB0OU1FTUNOcWxLelpUUDQiLCJzdWIiOjEwMTk3MDMsInBydiI6ImY2NGQ0OGE2Y2VjN2JkZmE3ZmJmODk5NDU0YjQ4OGIzZTQ2MjUyMGEifQ.LvKG8xftEsnvqALnM43rWEcA_Y_hhxbtiv9YXMW5WoY',
+    'authorization': f'{authorization}',
     'origin': 'https://skills.kjcxchina.com',
     'referer': 'https://skills.kjcxchina.com/',
     'sec-ch-ua': '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
@@ -102,7 +102,7 @@ def toPlay(course_id, cid, play_timestamp, play_duration):
   while play_timestamp < play_duration:
     response = savePlay(course_id, cid, play_timestamp, play_duration)
     # debug print(play_timestamp)
-    # debug print(response.text)
+    # print(response.json())
     finish = response.json()['data']['finish']
     print("播放进度:" + finish + "%")
     if finish == '100':
@@ -136,8 +136,12 @@ for chapter in chapters:
   # studyOne 拉取断点
   studyOneJson = studyOne(chapter_id).json()
   playTimestamp = studyOneJson['data']['play_timestamp']
+  if playTimestamp >= play_duration:
+    play_duration = playTimestamp + 100
   # savePlay 开始保存播放点
   print(play_title + " - 播放开始")
+  print(playTimestamp)
+  print(play_duration)
   toPlay(course_id, chapter_id, playTimestamp + 1, play_duration)
   print(play_title + " - 播放完毕")
   print()
