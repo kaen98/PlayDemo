@@ -1,0 +1,7 @@
+__pycache__
+__pycache__/
+config.yaml
+*.cache
+.DS_Store
+venv
+.idea/
