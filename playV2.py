@@ -140,8 +140,6 @@ for chapter in chapters:
     play_duration = playTimestamp + 100
   # savePlay 开始保存播放点
   print(play_title + " - 播放开始")
-  print(playTimestamp)
-  print(play_duration)
   toPlay(course_id, chapter_id, playTimestamp + 1, play_duration)
   print(play_title + " - 播放完毕")
   print()
