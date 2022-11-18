@@ -124,6 +124,12 @@ def toPlay(course_id, cid, play_timestamp, play_duration, type):
   while play_timestamp < play_duration:
     response = savePlay(course_id, cid, play_timestamp, play_duration, type)
     print(response.json())
+    if 'data' not in response.json():
+      print("savePlay返回数据: data 不存在")
+      break
+    if 'finish' not in response.json()['data']:
+      print("savePlay返回数据: finish 不存在")
+      break
     finish = response.json()['data']['finish']
     print("播放进度:" + finish + "%")
     if finish == '100':
@@ -132,41 +138,59 @@ def toPlay(course_id, cid, play_timestamp, play_duration, type):
     time.sleep(10)
     play_timestamp = play_timestamp + 10
 
-# 扫描未完成数据, 加入任务队列
-trainingPlanJson = trainingPlan().json()
-chapters = trainingPlanJson[0]['chapter']
-for chapter in chapters:
-  print(chapter)
-  course_id = chapter['course_id']
-  chapter_id = chapter['chapter_id']
-  # 已完成的课, 不继续播放
-  if (chapter['finish'] == '已完成'):
-    continue
-  # 拉取视频信息
-  coursesDetailJson = coursesDetail(course_id, chapter_id).json()
-  videoParame = coursesDetailJson['data']['videoParame']
-  play_duration = round(videoParame['VideoMeta']['Duration'] / 10)
-  if play_duration > 300:
-    play_duration = 300
-  play_title = videoParame['VideoMeta']['Title']
-  print("课程名:" + play_title)
-  print("课程时长:" + str(videoParame['VideoMeta']['Duration']) + "秒")
-  print("压缩至:" + str(play_duration) + "秒")
-  print(".")
-  print(".")
-  print(".")
-  # studyOne 拉取断点
-  studyOneJson = studyOne(chapter_id).json()
-  playTimestamp = studyOneJson['data']['play_timestamp']
-  if playTimestamp >= play_duration:
-    play_duration = playTimestamp + 100
-  # savePlay 开始保存播放点
-  print(play_title + " - 播放开始")
-  toPlay(course_id, chapter_id, playTimestamp + 1, play_duration, 0)
-  print(play_title + " - 播放完毕")
-  print()
-  print()
-  print()
+def toPlayV2(course_id, cid, play_timestamp, play_duration, type):
+  while 1:
+    response = savePlay(course_id, cid, play_timestamp, play_duration, type)
+    print(response.json())
+    if 'data' not in response.json():
+      print("savePlay返回数据: data 不存在")
+      break
+    if 'finish' not in response.json()['data']:
+      print("savePlay返回数据: finish 不存在")
+      break
+    finish = response.json()['data']['finish']
+    print("播放进度:" + finish + "%")
+    if finish == '100':
+      print("播放结束")
+      break
+    time.sleep(10)
+
+def speedPlay():
+  # 扫描未完成数据, 加入任务队列
+  trainingPlanJson = trainingPlan().json()
+  chapters = trainingPlanJson[0]['chapter']
+  for chapter in chapters:
+    print(chapter)
+    course_id = chapter['course_id']
+    chapter_id = chapter['chapter_id']
+    # 已完成的课, 不继续播放
+    if (chapter['finish'] == '已完成'):
+      continue
+    # 拉取视频信息
+    coursesDetailJson = coursesDetail(course_id, chapter_id).json()
+    videoParame = coursesDetailJson['data']['videoParame']
+    play_duration = round(videoParame['VideoMeta']['Duration'] / 10)
+    if play_duration > 300:
+      play_duration = 300
+    play_title = videoParame['VideoMeta']['Title']
+    print("课程名:" + play_title)
+    print("课程时长:" + str(videoParame['VideoMeta']['Duration']) + "秒")
+    print("压缩至:" + str(play_duration) + "秒")
+    print(".")
+    print(".")
+    print(".")
+    # studyOne 拉取断点
+    studyOneJson = studyOne(chapter_id).json()
+    playTimestamp = studyOneJson['data']['play_timestamp']
+    if playTimestamp >= play_duration:
+      play_duration = playTimestamp + 100
+    # savePlay 开始保存播放点
+    print(play_title + " - 播放开始")
+    toPlay(course_id, chapter_id, playTimestamp + 1, play_duration, 0)
+    print(play_title + " - 播放完毕")
+    print()
+    print()
+    print()
 
 
 # 时长检查
@@ -195,7 +219,7 @@ def checkClassCourseFinish():
     if playTimestamp < play_duration:
       print(playTimestamp)
       print(play_duration)
-      toPlay(course_id, chapter_id, playTimestamp + 1, play_duration, 1)
+      toPlay(course_id, chapter_id, play_duration, play_duration, 1)
     # 检查总时长
     classCourseFinishJson = classCourseFinish(course_id).json()
     # print(classCourseFinishJson)
