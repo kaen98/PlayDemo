@@ -222,7 +222,7 @@ def checkClassCourseFinish():
     if playTimestamp < play_duration:
       print(playTimestamp)
       print(play_duration)
-      toPlay(course_id, chapter_id, play_duration, play_duration, 1)
+      toPlayV2(course_id, chapter_id, play_duration, play_duration, 1)
     # 检查总时长
     classCourseFinishJson = classCourseFinish(course_id).json()
     # print(classCourseFinishJson)
@@ -230,7 +230,7 @@ def checkClassCourseFinish():
     if classCourseFinishJson['is_finish'] != 0:
       print("总时长已达标")
     print("总时长统计: " + classCourseFinishJson['msg'])
-    print("时长未打标, 继续播放")
+    print("时长未达标, 继续下一个视频播放")
     time.sleep(1)
   print("时长检查 - 结束 ...")
 
