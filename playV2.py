@@ -196,6 +196,9 @@ def speedPlay():
 # 时长检查
 def checkClassCourseFinish():
   print("时长检查 - 开始 ...")
+  # 扫描未完成数据
+  trainingPlanJson = trainingPlan().json()
+  chapters = trainingPlanJson[0]['chapter']
   for chapter in chapters:
     print(chapter)
     course_id = chapter['course_id']
@@ -227,8 +230,8 @@ def checkClassCourseFinish():
     if classCourseFinishJson['is_finish'] != 0:
       print("总时长已达标")
     print("总时长统计: " + classCourseFinishJson['msg'])
-    print("继续播放")
-    time.sleep(3)
+    print("时长未打标, 继续播放")
+    time.sleep(1)
   print("时长检查 - 结束 ...")
 
 checkClassCourseFinish()
