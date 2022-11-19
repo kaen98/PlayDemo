@@ -101,7 +101,7 @@ def classCourseFinish(course_id):
     'authority': 'skills-api.kjcxchina.com',
     'accept': '*/*',
     'accept-language': 'zh-CN,zh;q=0.9',
-    'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9za2lsbHMtYXBpLmtqY3hjaGluYS5jb21cL2FwaVwvdjFcL2F1dGhvcml6YXRpb25zIiwiaWF0IjoxNjY4NzU0MDE4LCJleHAiOjE2NzEzNDYwMTgsIm5iZiI6MTY2ODc1NDAxOCwianRpIjoiWDQxMTlRTzRCZGNib1pEUyIsInN1YiI6MTAxOTcwMywicHJ2IjoiZjY0ZDQ4YTZjZWM3YmRmYTdmYmY4OTk0NTRiNDg4YjNlNDYyNTIwYSJ9.1cEblLJCssvoFxmZR9OBv0T-D76-DbWJ-yT39G8vYTk',
+    'authorization': f'{authorization}',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
     'origin': 'https://skills.kjcxchina.com',
     'referer': 'https://skills.kjcxchina.com/',
@@ -196,6 +196,11 @@ def speedPlay():
 # 时长检查
 def checkClassCourseFinish():
   print("时长检查 - 开始 ...")
+  classCourseFinishJson = classCourseFinish(3275).json()
+  if classCourseFinishJson['is_finish'] != 0:
+    print("总时长已达标")
+    print("恭喜 " + classCourseFinishJson['name'] + ", 已完成 [" + classCourseFinishJson['class_name'] + "] 班级全部课程学习")
+    exit()
   # 扫描未完成数据
   trainingPlanJson = trainingPlan().json()
   chapters = trainingPlanJson[0]['chapter']
@@ -229,6 +234,8 @@ def checkClassCourseFinish():
     # exit()
     if classCourseFinishJson['is_finish'] != 0:
       print("总时长已达标")
+      print("恭喜 " + classCourseFinishJson['name'] + ", 已完成 [" + classCourseFinishJson['class_name'] + "] 班级全部课程学习")
+      exit()
     print("总时长统计: " + classCourseFinishJson['msg'])
     print("时长未达标, 继续下一个视频播放")
     time.sleep(1)
