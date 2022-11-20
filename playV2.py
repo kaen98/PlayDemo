@@ -136,7 +136,7 @@ def toPlay(course_id, cid, play_timestamp, play_duration, type):
     finish = response.json()['data']['finish']
     print("播放进度:" + finish + "%")
     if finish == '100':
-      print("播放")
+      print("播放结束")
       break
     time.sleep(10)
     play_timestamp = play_timestamp + 10
@@ -158,7 +158,7 @@ def toPlayV2(course_id, cid, play_timestamp, play_duration, type):
       break
     time.sleep(10)
 
-def speedPlay():
+def speedPlay(isSpeed):
   # 扫描未完成数据, 加入任务队列
   trainingPlanJson = trainingPlan().json()
   chapters = trainingPlanJson[0]['chapter']
@@ -172,10 +172,12 @@ def speedPlay():
     # 拉取视频信息
     coursesDetailJson = coursesDetail(course_id, chapter_id).json()
     videoParame = coursesDetailJson['data']['videoParame']
-    play_duration = round(videoParame['VideoMeta']['Duration'] / 10)
-    if play_duration > 300:
-      play_duration = 300
+    play_duration = videoParame['VideoMeta']['Duration']
     play_title = videoParame['VideoMeta']['Title']
+    if isSpeed:
+      play_duration = round(videoParame['VideoMeta']['Duration'] / 10)
+      if play_duration > 300:
+        play_duration = 300
     print("课程名:" + play_title)
     print("课程时长:" + str(videoParame['VideoMeta']['Duration']) + "秒")
     print("压缩至:" + str(play_duration) + "秒")
@@ -194,7 +196,7 @@ def speedPlay():
     print()
     print()
     print()
-
+speedPlay(0)
 
 # 时长检查
 def checkClassCourseFinish():
