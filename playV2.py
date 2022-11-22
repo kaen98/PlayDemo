@@ -3,12 +3,11 @@ import time
 import requests
 from common.config import getconfig
 
-# 用户
-USER = "user"
-
 # 登录token
 config = getconfig()
 authorization = config['login']['authorization']
+USER = config['login']['user']
+
 
 def savePlay(course_id, cid, play_timestamp, play_duration, type):
   url = "https://skills-api.kjcxchina.com/api/v1/saveStudy"
@@ -134,7 +133,7 @@ def toPlay(course_id, cid, play_timestamp, play_duration, type):
       print("savePlay返回数据: finish 不存在")
       break
     finish = response.json()['data']['finish']
-    print("播放进度:" + finish + "%")
+    print(USER + "播放进度:" + finish + "%")
     if finish == '100':
       print("播放结束")
       break
